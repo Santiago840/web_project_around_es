@@ -61,10 +61,24 @@ function handleOpenedEditModal() {
   fillProfileForm(profileTitle.textContent, profileDescription.textContent);
 }
 
+function handleProfileFormSubmit(){
+  let inputName = popupInputName.value;
+  let inputJob = popupInputDescription.value;
+
+  profileTitle.textContent = inputName;
+  profileDescription.textContent = inputJob;
+  console.log(inputName, inputJob);
+}
+
 profileEditBtn.addEventListener("click", () => {
   handleOpenedEditModal();
 });
 
 popupCloseBtn.addEventListener("click", () => {
   closeModal(popupProfile);
+});
+
+popupForm.addEventListener('submit', (evt)=>{
+  evt.preventDefault();
+  handleProfileFormSubmit();
 });
