@@ -30,16 +30,16 @@ initialCards.forEach((element) => {
 });
 
 const profileSection = document.querySelector(".profile");
-const profileTitle = profileSection.querySelector(".profile__title");
-const profileDescription = profileSection.querySelector(
+let profileTitle = profileSection.querySelector(".profile__title");
+let profileDescription = profileSection.querySelector(
   ".profile__description",
 );
 const profileEditBtn = profileSection.querySelector(".profile__edit-button");
 const popupProfile = document.querySelector("#edit-popup");
 const popupCloseBtn = popupProfile.querySelector(".popup__close");
 const popupForm = popupProfile.querySelector(".popup__form");
-const popupInputName = popupForm.querySelector(".popup__input_type_name");
-const popupInputDescription = popupForm.querySelector(
+let popupInputName = popupForm.querySelector(".popup__input_type_name");
+let popupInputDescription = popupForm.querySelector(
   ".popup__input_type_description",
 );
 
