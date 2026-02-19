@@ -25,6 +25,27 @@ let initialCards = [
   },
 ];
 
-initialCards.forEach(element => {
-    console.log(element['name']);
+initialCards.forEach((element) => {
+  console.log(element["name"]);
+});
+
+const profileSection = document.querySelector(".profile");
+const profileEditBtn = profileSection.querySelector(".profile__edit-button");
+const popupProfile = document.querySelector("#edit-popup");
+const popupCloseBtn = popupProfile.querySelector(".popup__close");
+
+function openModal(modal) {
+  modal.classList.add("popup_is-opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("popup_is-opened");
+}
+
+profileEditBtn.addEventListener("click", ()=>{
+  openModal(popupProfile);
+});
+
+popupCloseBtn.addEventListener("click", ()=>{
+  closeModal(popupProfile);
 });
