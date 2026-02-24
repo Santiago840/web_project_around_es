@@ -2,9 +2,12 @@ const profileSection = document.querySelector(".profile");
 let profileTitle = profileSection.querySelector(".profile__title");
 let profileDescription = profileSection.querySelector(".profile__description");
 const profileEditBtn = profileSection.querySelector(".profile__edit-button");
+const profileAddBtn = profileSection.querySelector(".profile__add-button");
 const popupProfile = document.querySelector("#edit-popup");
-const popupCloseBtn = popupProfile.querySelector(".popup__close");
-const popupForm = popupProfile.querySelector(".popup__form");
+const popupNewCard = document.querySelector("#new-card-popup");
+const popupCloseBtn = document.querySelectorAll(".popup__close");
+const popupForm = popupProfile.querySelector("#edit-profile-form");
+const popupAddForm = document.querySelector("#new-card-form");
 let popupInputName = popupForm.querySelector(".popup__input_type_name");
 let popupInputDescription = popupForm.querySelector(
   ".popup__input_type_description",
@@ -47,17 +50,15 @@ initialCards.forEach((element) => {
 
 function getCardElement(
   name = "Sin título",
-  link = "../images/placeholder.jpg",
+  link = "../images/placeholder.jpg"
 ) {
   const templateCardClone = templateCard.cloneNode(true);
   let cardImage = templateCardClone.querySelector(".card__image");
   cardImage.src = link;
   cardImage.alt = name;
-  
+
   let cardTitle = templateCardClone.querySelector(".card__title");
   cardTitle.textContent = name;
-  
-  console.log(templateCardClone.querySelector(".card__image"));
 
   return templateCardClone;
 }
@@ -85,6 +86,18 @@ function handleOpenedEditModal() {
   fillProfileForm(profileTitle.textContent, profileDescription.textContent);
 }
 
+popupForm.addEventListener("submit", handleProfileFormSubmit);
+popupAddForm.addEventListener("submit", handleCardFormSubmit);
+
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  let name = document.querySelector(".popup__input_type_card-name").value;
+  let link = document.querySelector(".popup__input_type_url").value;
+  renderCard(name, link, cardsList);
+  evt.target.reset();
+  closeModal(popupNewCard);
+}
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileTitle.textContent = popupInputName.value;
@@ -92,10 +105,14 @@ function handleProfileFormSubmit(evt) {
   closeModal(popupProfile);
 }
 
-profileEditBtn.addEventListener("click", handleOpenedEditModal);
-
-popupCloseBtn.addEventListener("click", () => {
-  closeModal(popupProfile);
+profileAddBtn.addEventListener("click", () => {
+  openModal(popupNewCard);
 });
 
-popupForm.addEventListener("submit", handleProfileFormSubmit);
+profileEditBtn.addEventListener("click", handleOpenedEditModal);
+
+popupCloseBtn.forEach((button) => {
+  button.addEventListener("click", () => {
+    closeModal(button.closest(".popup"));
+  });
+});
