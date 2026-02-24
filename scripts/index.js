@@ -1,3 +1,19 @@
+const profileSection = document.querySelector(".profile");
+let profileTitle = profileSection.querySelector(".profile__title");
+let profileDescription = profileSection.querySelector(".profile__description");
+const profileEditBtn = profileSection.querySelector(".profile__edit-button");
+const popupProfile = document.querySelector("#edit-popup");
+const popupCloseBtn = popupProfile.querySelector(".popup__close");
+const popupForm = popupProfile.querySelector(".popup__form");
+let popupInputName = popupForm.querySelector(".popup__input_type_name");
+let popupInputDescription = popupForm.querySelector(
+  ".popup__input_type_description",
+);
+const cardsList = document.querySelector(".cards__list");
+const templateCard = cardsList
+  .querySelector("#template-card")
+  .content.querySelector(".card");
+
 let initialCards = [
   {
     name: "Valle de Yosemite",
@@ -26,22 +42,30 @@ let initialCards = [
 ];
 
 initialCards.forEach((element) => {
-  console.log(element["name"]);
+  renderCard(element["name"], element["link"], cardsList);
 });
 
-const profileSection = document.querySelector(".profile");
-let profileTitle = profileSection.querySelector(".profile__title");
-let profileDescription = profileSection.querySelector(
-  ".profile__description",
-);
-const profileEditBtn = profileSection.querySelector(".profile__edit-button");
-const popupProfile = document.querySelector("#edit-popup");
-const popupCloseBtn = popupProfile.querySelector(".popup__close");
-const popupForm = popupProfile.querySelector(".popup__form");
-let popupInputName = popupForm.querySelector(".popup__input_type_name");
-let popupInputDescription = popupForm.querySelector(
-  ".popup__input_type_description",
-);
+function getCardElement(
+  name = "Sin título",
+  link = "../images/placeholder.jpg",
+) {
+  const templateCardClone = templateCard.cloneNode(true);
+  let cardImage = templateCardClone.querySelector(".card__image");
+  cardImage.src = link;
+  cardImage.alt = name;
+  
+  let cardTitle = templateCardClone.querySelector(".card__title");
+  cardTitle.textContent = name;
+  
+  console.log(templateCardClone.querySelector(".card__image"));
+
+  return templateCardClone;
+}
+
+function renderCard(name, link, container) {
+  let card = getCardElement(name, link);
+  container.prepend(card);
+}
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
