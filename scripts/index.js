@@ -52,15 +52,27 @@ function getCardElement(
   name = "Sin título",
   link = "../images/placeholder.jpg"
 ) {
-  const templateCardClone = templateCard.cloneNode(true);
-  let cardImage = templateCardClone.querySelector(".card__image");
+  const cardElement = templateCard.cloneNode(true);
+  let cardImage = cardElement.querySelector(".card__image");
+  let cardTitle = cardElement.querySelector(".card__title");
+  let cardLikeBtn = cardElement.querySelector(".card__like-button");
+  let cardDeleteBtn = cardElement.querySelector(".card__delete-button");
+
   cardImage.src = link;
   cardImage.alt = name;
 
-  let cardTitle = templateCardClone.querySelector(".card__title");
   cardTitle.textContent = name;
 
-  return templateCardClone;
+  cardLikeBtn.addEventListener('click', ()=>{
+    cardLikeBtn.classList.toggle('card__like-button_is-active');
+  });
+
+  cardDeleteBtn.addEventListener('click', ()=>{
+    cardElement.remove();
+  });
+
+
+  return cardElement;
 }
 
 function renderCard(name, link, container) {
