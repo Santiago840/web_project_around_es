@@ -1,22 +1,3 @@
-const profileSection = document.querySelector(".profile");
-let profileTitle = profileSection.querySelector(".profile__title");
-let profileDescription = profileSection.querySelector(".profile__description");
-const profileEditBtn = profileSection.querySelector(".profile__edit-button");
-const profileAddBtn = profileSection.querySelector(".profile__add-button");
-const popupProfile = document.querySelector("#edit-popup");
-const popupNewCard = document.querySelector("#new-card-popup");
-const popupCloseBtn = document.querySelectorAll(".popup__close");
-const popupForm = popupProfile.querySelector("#edit-profile-form");
-const popupAddForm = document.querySelector("#new-card-form");
-let popupInputName = popupForm.querySelector(".popup__input_type_name");
-let popupInputDescription = popupForm.querySelector(
-  ".popup__input_type_description",
-);
-const cardsList = document.querySelector(".cards__list");
-const templateCard = cardsList
-  .querySelector("#template-card")
-  .content.querySelector(".card");
-
 let initialCards = [
   {
     name: "Valle de Yosemite",
@@ -43,6 +24,26 @@ let initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
   },
 ];
+
+const profileSection = document.querySelector(".profile");
+let profileTitle = profileSection.querySelector(".profile__title");
+let profileDescription = profileSection.querySelector(".profile__description");
+const profileEditBtn = profileSection.querySelector(".profile__edit-button");
+const profileAddBtn = profileSection.querySelector(".profile__add-button");
+const popupProfile = document.querySelector("#edit-popup");
+const popupNewCard = document.querySelector("#new-card-popup");
+const popupCloseBtn = document.querySelectorAll(".popup__close");
+const popupForm = popupProfile.querySelector("#edit-profile-form");
+const popupAddForm = document.querySelector("#new-card-form");
+const popupImage = document.querySelector("#image-popup");
+let popupInputName = popupForm.querySelector(".popup__input_type_name");
+let popupInputDescription = popupForm.querySelector(
+  ".popup__input_type_description",
+);
+const cardsList = document.querySelector(".cards__list");
+const templateCard = cardsList
+  .querySelector("#template-card")
+  .content.querySelector(".card");
 
 initialCards.forEach((element) => {
   renderCard(element["name"], element["link"], cardsList);
@@ -71,6 +72,9 @@ function getCardElement(
     cardElement.remove();
   });
 
+  cardImage.addEventListener('click', ()=>{
+    handleOpenedImageModal(name, link);
+  });
 
   return cardElement;
 }
@@ -98,13 +102,26 @@ function handleOpenedEditModal() {
   fillProfileForm(profileTitle.textContent, profileDescription.textContent);
 }
 
+function handleOpenedImageModal(name, link){
+  openModal(popupImage);
+  fillImageInfo(name, link);
+} 
+
+function fillImageInfo(name, link){
+  let imageElement = popupImage.querySelector(".popup__image");
+  let captionElement = popupImage.querySelector(".popup__caption");
+  imageElement.alt = name;
+  captionElement.textContent = name;
+  imageElement.src = link;
+}
+
 popupForm.addEventListener("submit", handleProfileFormSubmit);
 popupAddForm.addEventListener("submit", handleCardFormSubmit);
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  let name = document.querySelector(".popup__input_type_card-name").value;
-  let link = document.querySelector(".popup__input_type_url").value;
+  let name = evt.target.querySelector(".popup__input_type_card-name").value;
+  let link = evt.target.querySelector(".popup__input_type_url").value;
   renderCard(name, link, cardsList);
   evt.target.reset();
   closeModal(popupNewCard);
