@@ -1,4 +1,6 @@
 Nombre del Proyecto: web_project_around_es 
+
+Descripción
 Este proyecto tiene como finalidad demostrar el manejo del DOM mediante la integración de conocimientos en HTML, CSS y JavaScript. Se implementan modales dinámicos optimizados para no afectar el rendimiento de la página.
 Actualmente, los datos se encuentran definidos de forma hardcoded; sin embargo, se evidencia el uso automatizado de plantillas de elementos (templates) para la creación y renderizado dinámico de componentes, permitiendo una estructura organizada, reutilizable y escalable.
 
