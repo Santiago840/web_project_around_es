@@ -34,6 +34,7 @@ const popupProfile = document.querySelector("#edit-popup");
 const popupNewCard = document.querySelector("#new-card-popup");
 const popupCloseBtn = document.querySelectorAll(".popup__close");
 const formEdit = popupProfile.querySelector("#edit-profile-form");
+const formAddCard = popupNewCard.querySelector("#new-card-form");
 const popupAddForm = document.querySelector("#new-card-form");
 const popupImage = document.querySelector("#image-popup");
 let popupInputName = formEdit.querySelector(".popup__input_type_name");
@@ -46,6 +47,8 @@ const templateCard = cardsList
   .content.querySelector(".card");
 const formInputsEdit = formEdit.querySelectorAll(".popup__input");
 const formBtnEdit = formEdit.querySelector(".popup__button");
+const formInputsCard = formAddCard.querySelectorAll(".popup__input");
+const formBtnAddCard = formAddCard.querySelector(".popup__button");
 
 initialCards.forEach((element) => {
   renderCard(element["name"], element["link"], cardsList);
@@ -130,7 +133,7 @@ function handleCardFormSubmit(evt) {
 }
 
 function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
+  evt.target.preventDefault();
   profileTitle.textContent = popupInputName.value;
   profileDescription.textContent = popupInputDescription.value;
   closeModal(popupProfile);
@@ -148,16 +151,16 @@ function hideInputError(input, errorElement) {
   errorElement.classList.remove("popup__input-error_active");
 }
 
-function hasInvalidInput(inputList){
-  return Array.from(inputList).some(function(input){
-      return !input.validity.valid;
+function hasInvalidInput(inputList) {
+  return Array.from(inputList).some(function (input) {
+    return !input.validity.valid;
   });
 }
 
-function toggleButtonState(inputList, button){
-  if(hasInvalidInput(inputList)){
+function toggleButtonState(inputList, button) {
+  if (hasInvalidInput(inputList)) {
     button.disabled = true;
-  }else{
+  } else {
     button.disabled = false;
   }
 }
@@ -175,14 +178,27 @@ popupCloseBtn.forEach((button) => {
 });
 
 formInputsEdit.forEach((input) => {
-  const errorElement = formEdit.querySelector(`.${input.id}-input-error`); 
+  const errorElement = formEdit.querySelector(`.${input.id}-input-error`);
   input.addEventListener("input", () => {
     if (!input.checkValidity()) {
       showInputError(input, errorElement);
     } else {
       hideInputError(input, errorElement);
     }
-    
+
     toggleButtonState(formInputsEdit, formBtnEdit);
+  });
+});
+
+formInputsCard.forEach((input) => {
+  const errorElement = formAddCard.querySelector(`.${input.id}-input-error`);
+  input.addEventListener("input", () => {
+    if (!input.checkValidity()) {
+      showInputError(input, errorElement);
+    } else {
+      hideInputError(input, errorElement);
+    }
+
+    toggleButtonState(formInputsCard, formBtnAddCard);
   });
 });
