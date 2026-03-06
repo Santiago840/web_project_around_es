@@ -31,6 +31,13 @@
   cursor: pointer;
 }
 
+.popup__button:disabled{
+  background: white;
+  border: solid 1px #cccccc;
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
 .popup__close {
   width: 35px;
   height: 35px;
@@ -115,6 +122,15 @@
   left: 0;
   top: calc(100% + 10px);
   margin: 0;
+}
+/* Corregir el last-of-type */
+.popup__input-error {
+  border-color: red;
+}
+
+.popup__input-error_active {
+  color:red;
+  font-size: 12px;
 }
 
 @media screen and (max-width: 544px) {
