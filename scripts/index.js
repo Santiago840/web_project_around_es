@@ -142,9 +142,22 @@ function validateForms() {
   });
 }
 
+function resetValidation(form) {
+  const inputs = form.querySelectorAll(".popup__input");
+  const button = form.querySelector(".popup__button");
+
+  inputs.forEach((input) => {
+    const errorElement = form.querySelector(`.${input.id}-input-error`);
+    hideInputError(input, errorElement);
+  });
+
+  button.disabled = true;
+}
+
 function handleOpenedEditModal() {
-  openModal(popupProfile);
   fillProfileForm(profileTitle.textContent, profileDescription.textContent);
+  resetValidation(formEdit);
+  openModal(popupProfile);
 }
 
 function handleOpenedImageModal(name, link) {
@@ -179,8 +192,10 @@ function handleProfileFormSubmit(evt) {
   closeModal(popupProfile);
 }
 
-profileAddBtn.addEventListener("click", () => {
+profileAddBtn.addEventListener("click", (evt) => {
   openModal(popupNewCard);
+  formAddCard.reset();
+  resetValidation(formAddCard);
 });
 
 profileEditBtn.addEventListener("click", handleOpenedEditModal);
