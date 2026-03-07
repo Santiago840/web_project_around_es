@@ -191,4 +191,10 @@ popupCloseBtn.forEach((button) => {
   });
 });
 
+document.addEventListener('click', (evt)=>{
+  if(evt.target.classList.contains('popup')){
+    closeModal(evt.target);
+  }
+});
+
 validateForms();
