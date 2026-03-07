@@ -191,10 +191,27 @@ popupCloseBtn.forEach((button) => {
   });
 });
 
-document.addEventListener('click', (evt)=>{
-  if(evt.target.classList.contains('popup')){
-    closeModal(evt.target);
-  }
-});
+function closeModalEscKey() {
+  document.addEventListener("keydown", (evt) => {
+    const popup = document.querySelector(".popup_is-opened");
+    if (evt.key === "Escape" && popup) {
+      closeModal(popup);
+    }
+  });
+}
 
+function closeModalOverlay() {
+  document.addEventListener("click", (evt) => {
+    if (evt.target.classList.contains("popup_is-opened")) {
+      closeModal(evt.target);
+    }
+  });
+}
+
+function handleCloseModalOverlay() {
+  closeModalOverlay();
+  closeModalEscKey();
+}
+
+handleCloseModalOverlay();
 validateForms();
