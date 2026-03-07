@@ -23,7 +23,7 @@
   background: #000;
   border-radius: 2px;
   border: none;
-  margin-top: 48px;
+  margin-top: 30px;
 }
 
 .popup__button:hover {
@@ -84,7 +84,18 @@
 }
 
 .popup__input:last-of-type {
-  margin-bottom: 0;
+  margin-bottom: 0px;
+}
+
+.popup__input-error {
+  display: block;
+  min-height: 2rem;
+  border-color: red;
+}
+
+.popup__input-error_active {
+  color:red;
+  font-size: 12px;
 }
 
 .popup__title {
@@ -122,15 +133,6 @@
   left: 0;
   top: calc(100% + 10px);
   margin: 0;
-}
-/* Corregir el last-of-type */
-.popup__input-error {
-  border-color: red;
-}
-
-.popup__input-error_active {
-  color:red;
-  font-size: 12px;
 }
 
 @media screen and (max-width: 544px) {
