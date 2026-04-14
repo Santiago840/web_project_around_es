@@ -32,14 +32,14 @@ const cardList = new Section(
     items: initialCards,
     renderer: (item) => {
       const card = new Card(
+        item._id,
         item.name,
         item.link,
         () => {
           popupImage.open({ name: item.name, link: item.link });
         },
         (handlerConfirm) => {
-          popupDeleteCard.setConfirmHandler(handlerConfirm);
-          popupDeleteCard.open();
+          handleDeletedCardModal(item._id, handlerConfirm);
         },
         "#template-card",
       );
@@ -72,34 +72,36 @@ const popupEditForm = new PopupWithForm((inputValues) => {
 }, "#edit-popup");
 
 const popupCardForm = new PopupWithForm((inputValues) => {
-  const card = new Card(
-    inputValues["place-name"],
-    inputValues.link,
-    () => {
-      popupImage.open({
-        name: inputValues["place-name"],
-        link: inputValues.link,
-      });
-    },
-    (handlerConfirm) => {
-      popupDeleteCard.setConfirmHandler(handlerConfirm);
-      popupDeleteCard.open();
-    },
-    "#template-card",
-  );
-  const cardElement = card.generateCard();
-
-  cardList.addItem(cardElement);
-
   api
     .addCard({
       name: inputValues["place-name"],
       link: inputValues.link,
     })
     .then((res) => {
-      console.log(res);
+      const id = res._id;
+      const name = res.name;
+      const link = res.link;
+      const card = new Card(
+        id,
+        name,
+        link,
+        () => {
+          popupImage.open({
+            name,
+            link,
+          });
+        },
+        (handlerConfirm) => {
+          handleDeletedCardModal(id, handlerConfirm);
+        },
+        "#template-card",
+      );
+      const cardElement = card.generateCard();
+
+      cardList.addItem(cardElement);
+
+      popupCardForm.close();
     });
-  popupCardForm.close();
 }, "#new-card-popup");
 
 const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
@@ -133,6 +135,15 @@ function handleOpenedEditModal() {
 function handleOpenedAddCardModal() {
   formValids[formAddCard.id].resetValidation();
   popupCardForm.open();
+}
+
+function handleDeletedCardModal(id, handlerConfirm) {
+  popupDeleteCard.setConfirmHandler(() => {
+    api.deleteCard(id).then(() => {
+      handlerConfirm();
+    });
+  });
+  popupDeleteCard.open();
 }
 
 function setEventListeners() {
