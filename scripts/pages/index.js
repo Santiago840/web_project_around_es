@@ -5,7 +5,6 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import {
-  initialCards,
   configForm,
   formValids,
   profileEditBtn,
@@ -14,7 +13,19 @@ import {
   formAddCard,
   popupInputName,
   popupInputDescription,
+  api,
 } from "../utils/constants.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
+
+const initialCards = [];
+api.getInitialCards().then((res) => {
+  initialCards.push(...res);
+  cardList.renderItems();
+});
+
+api.getUserInfo().then((res) => {
+  infoUser.setUserInfo({ name: res.name, job: res.about, avatar: res.avatar });
+});
 
 const cardList = new Section(
   {
@@ -25,6 +36,10 @@ const cardList = new Section(
         item.link,
         () => {
           popupImage.open({ name: item.name, link: item.link });
+        },
+        (handlerConfirm) => {
+          popupDeleteCard.setConfirmHandler(handlerConfirm);
+          popupDeleteCard.open();
         },
         "#template-card",
       );
@@ -38,15 +53,21 @@ const cardList = new Section(
 const infoUser = new UserInfo({
   selectorName: ".profile__title",
   selectorJob: ".profile__description",
+  selectorAvatar: ".profile__image",
 });
 
 const popupImage = new PopupWithImage("#image-popup");
 
 const popupEditForm = new PopupWithForm((inputValues) => {
-  infoUser.setUserInfo({
-    name: inputValues.name,
-    job: inputValues.description,
-  });
+  api
+    .updateUserInfo({ name: inputValues.name, about: inputValues.description })
+    .then((res) => {
+      infoUser.setUserInfo({
+        name: res.name,
+        job: res.about,
+        avatar: res.avatar,
+      });
+    });
   popupEditForm.close();
 }, "#edit-popup");
 
@@ -60,17 +81,30 @@ const popupCardForm = new PopupWithForm((inputValues) => {
         link: inputValues.link,
       });
     },
+    (handlerConfirm) => {
+      popupDeleteCard.setConfirmHandler(handlerConfirm);
+      popupDeleteCard.open();
+    },
     "#template-card",
   );
-
   const cardElement = card.generateCard();
+
   cardList.addItem(cardElement);
 
+  api
+    .addCard({
+      name: inputValues["place-name"],
+      link: inputValues.link,
+    })
+    .then((res) => {
+      console.log(res);
+    });
   popupCardForm.close();
 }, "#new-card-popup");
 
+const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
+
 (function initialize() {
-  cardList.renderItems();
   setEventListeners();
   validateForms();
 })();
@@ -109,4 +143,5 @@ function setEventListeners() {
   popupImage.setEventListeners();
   popupEditForm.setEventListeners();
   popupCardForm.setEventListeners();
+  popupDeleteCard.setEventListeners();
 }

@@ -1,29 +1,4 @@
-export const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+import Api from "../components/Api.js";
 
 export const configForm = {
   inputClass: ".popup__input",
@@ -31,11 +6,14 @@ export const configForm = {
   errorClass: "popup__input-error",
   errorClassActive: "popup__input-error_active",
 };
-
 export const formValids = [];
 export const profileSection = document.querySelector(".profile");
-export const profileEditBtn = profileSection.querySelector(".profile__edit-button");
-export const profileAddBtn = profileSection.querySelector(".profile__add-button");
+export const profileEditBtn = profileSection.querySelector(
+  ".profile__edit-button",
+);
+export const profileAddBtn = profileSection.querySelector(
+  ".profile__add-button",
+);
 export const popupProfile = document.querySelector("#edit-popup");
 export const popupNewCard = document.querySelector("#new-card-popup");
 export const formEdit = popupProfile.querySelector("#edit-profile-form");
@@ -44,4 +22,10 @@ export let popupInputName = formEdit.querySelector(".popup__input_type_name");
 export let popupInputDescription = formEdit.querySelector(
   ".popup__input_type_description",
 );
-
+export const api = new Api({
+  baseUrl: "https://around-api.es.tripleten-services.com/v1",
+  headers: {
+    authorization: "a3301193-c1de-42e7-89f6-308a6476ad81",
+    "Content-Type": "application/json",
+  },
+});

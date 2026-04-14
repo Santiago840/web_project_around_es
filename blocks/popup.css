@@ -135,6 +135,10 @@
   margin: 0;
 }
 
+.popup__delete{
+  min-height: 0;
+}
+
 @media screen and (max-width: 544px) {
   .popup {
     bottom: 112px;
