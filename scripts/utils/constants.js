@@ -29,3 +29,4 @@ export const api = new Api({
     "Content-Type": "application/json",
   },
 });
+export const profileEditImageBtn = document.querySelector(".profile__edit-icon");

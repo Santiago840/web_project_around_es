@@ -14,6 +14,7 @@ import {
   popupInputName,
   popupInputDescription,
   api,
+  profileEditImageBtn,
 } from "../utils/constants.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
@@ -143,6 +144,17 @@ const popupCardForm = new PopupWithForm((inputValues) => {
 
 const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
 
+const popupEditImageProfile = new PopupWithForm((inputValues) => {
+  api.updateUserImage({avatar: inputValues.link}).then((res) => {
+    infoUser.setUserInfo({
+        name: res.name,
+        job: res.about,
+        avatar: res.avatar,
+      });
+  });
+  popupEditImageProfile.close();
+}, "#edit-profile-image-popup");
+
 (function initialize() {
   setEventListeners();
   validateForms();
@@ -183,13 +195,20 @@ function handleDeletedCardModal(id, handlerConfirm) {
   popupDeleteCard.open();
 }
 
+function handleOpenedEditImageModal() {
+  popupEditImageProfile.open();
+}
+
 function setEventListeners() {
   profileAddBtn.addEventListener("click", handleOpenedAddCardModal);
 
   profileEditBtn.addEventListener("click", handleOpenedEditModal);
 
+  profileEditImageBtn.addEventListener("click", handleOpenedEditImageModal);
+
   popupImage.setEventListeners();
   popupEditForm.setEventListeners();
   popupCardForm.setEventListeners();
   popupDeleteCard.setEventListeners();
+  popupEditImageProfile.setEventListeners();
 }

@@ -53,4 +53,8 @@ export default class Api {
   deleteLike(id) {
     return this._getRequest(`${this._cardUrl}${id}/likes`, "DELETE");
   }
+
+  updateUserImage(body){
+    return this._getRequest(`${this._userUrl}/avatar`, "PATCH", body);
+  }
 }
