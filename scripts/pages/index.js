@@ -19,14 +19,20 @@ import {
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 const initialCards = [];
-api.getInitialCards().then((res) => {
-  initialCards.push(...res);
-  cardList.renderItems();
-});
 
-api.getUserInfo().then((res) => {
-  infoUser.setUserInfo({ name: res.name, job: res.about, avatar: res.avatar });
-});
+api
+  .getInitialData()
+  .then(([user, cards]) => {
+    infoUser.setUserInfo({
+      name: user.name,
+      job: user.about,
+      avatar: user.avatar,
+    });
+
+    initialCards.push(...cards);
+    cardList.renderItems();
+  })
+  .catch((err) => console.log(err));
 
 const cardList = new Section(
   {
@@ -88,6 +94,7 @@ const popupEditForm = new PopupWithForm((inputValues) => {
         avatar: res.avatar,
       });
     })
+    .catch((err) => console.log(err))
     .finally(() => {
       popupEditForm.renderLoading(false);
       popupEditForm.close();
@@ -142,6 +149,7 @@ const popupCardForm = new PopupWithForm((inputValues) => {
       const cardElement = card.generateCard();
       cardList.addItem(cardElement);
     })
+    .catch((err) => console.log(err))
     .finally(() => {
       popupCardForm.renderLoading(false);
       popupCardForm.close();
@@ -161,6 +169,7 @@ const popupEditImageProfile = new PopupWithForm((inputValues) => {
         avatar: res.avatar,
       });
     })
+    .catch((err) => console.log(err))
     .finally(() => {
       popupEditImageProfile.renderLoading(false);
       popupEditImageProfile.close();
@@ -207,6 +216,7 @@ function handleDeletedCardModal(id, handlerConfirm) {
       .then(() => {
         handlerConfirm();
       })
+      .catch((err) => console.log(err))
       .finally(() => {
         popupDeleteCard.renderLoading(false);
         popupDeleteCard.close();

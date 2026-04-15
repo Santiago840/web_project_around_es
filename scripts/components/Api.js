@@ -6,21 +6,22 @@ export default class Api {
     this._cardUrl = `${this._baseUrl}/cards/`;
   }
 
-  _validateRequestBody(body) {
-    return body !== null ? JSON.stringify(body) : undefined;
-  }
-
   _getRequest(url, method = "GET", body = null) {
-    return fetch(url, {
-      method: method,
-      headers: this._headers,
-      body: this._validateRequestBody(body),
-    }).then((res) => {
-      return res.ok
-        ? res.json()
-        : Promise.reject(`Something went wrong error: ${res.status}`);
+    const options = { headers: this._headers, method: method };
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
+    return fetch(url, options).then((res) => {
+      return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
     });
   }
+
+  getInitialData() {
+  return Promise.all([
+    this.getUserInfo(),
+    this.getInitialCards(),
+  ]);
+}
 
   getUserInfo() {
     return this._getRequest(this._userUrl);
@@ -54,7 +55,7 @@ export default class Api {
     return this._getRequest(`${this._cardUrl}${id}/likes`, "DELETE");
   }
 
-  updateUserImage(body){
+  updateUserImage(body) {
     return this._getRequest(`${this._userUrl}/avatar`, "PATCH", body);
   }
 }
