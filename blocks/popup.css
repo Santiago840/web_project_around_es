@@ -31,7 +31,7 @@
   cursor: pointer;
 }
 
-.popup__button:disabled{
+.popup__button:disabled {
   background: white;
   border: solid 1px #cccccc;
   color: #cccccc;
@@ -94,7 +94,7 @@
 }
 
 .popup__input-error_active {
-  color:red;
+  color: red;
   font-size: 12px;
 }
 
@@ -135,8 +135,12 @@
   margin: 0;
 }
 
-.popup__delete{
+.popup__content_content_delete {
   min-height: 0;
+}
+
+.popup__content_content_image-profile {
+  min-height: 272px;
 }
 
 @media screen and (max-width: 544px) {
