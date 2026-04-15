@@ -78,6 +78,7 @@ const infoUser = new UserInfo({
 const popupImage = new PopupWithImage("#image-popup");
 
 const popupEditForm = new PopupWithForm((inputValues) => {
+  popupEditForm.renderLoading(true);
   api
     .updateUserInfo({ name: inputValues.name, about: inputValues.description })
     .then((res) => {
@@ -86,11 +87,15 @@ const popupEditForm = new PopupWithForm((inputValues) => {
         job: res.about,
         avatar: res.avatar,
       });
+    })
+    .finally(() => {
+      popupEditForm.renderLoading(false);
+      popupEditForm.close();
     });
-  popupEditForm.close();
 }, "#edit-popup");
 
 const popupCardForm = new PopupWithForm((inputValues) => {
+  popupCardForm.renderLoading(true);
   api
     .addCard({
       name: inputValues["place-name"],
@@ -135,9 +140,10 @@ const popupCardForm = new PopupWithForm((inputValues) => {
         "#template-card",
       );
       const cardElement = card.generateCard();
-
       cardList.addItem(cardElement);
-
+    })
+    .finally(() => {
+      popupCardForm.renderLoading(false);
       popupCardForm.close();
     });
 }, "#new-card-popup");
@@ -145,13 +151,16 @@ const popupCardForm = new PopupWithForm((inputValues) => {
 const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
 
 const popupEditImageProfile = new PopupWithForm((inputValues) => {
-  api.updateUserImage({avatar: inputValues.link}).then((res) => {
+  api.updateUserImage({ avatar: inputValues.link }).then((res) => {
     infoUser.setUserInfo({
-        name: res.name,
-        job: res.about,
-        avatar: res.avatar,
-      });
-  });
+      name: res.name,
+      job: res.about,
+      avatar: res.avatar,
+    });
+  }).finally(() => {
+      popupEditImageProfile.renderLoading(false);
+      popupEditImageProfile.close();
+    });;
   popupEditImageProfile.close();
 }, "#edit-profile-image-popup");
 
