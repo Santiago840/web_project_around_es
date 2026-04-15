@@ -152,16 +152,19 @@ const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
 
 const popupEditImageProfile = new PopupWithForm((inputValues) => {
   popupEditImageProfile.renderLoading(true);
-  api.updateUserImage({ avatar: inputValues.link }).then((res) => {
-    infoUser.setUserInfo({
-      name: res.name,
-      job: res.about,
-      avatar: res.avatar,
-    });
-  }).finally(() => {
+  api
+    .updateUserImage({ avatar: inputValues.link })
+    .then((res) => {
+      infoUser.setUserInfo({
+        name: res.name,
+        job: res.about,
+        avatar: res.avatar,
+      });
+    })
+    .finally(() => {
       popupEditImageProfile.renderLoading(false);
       popupEditImageProfile.close();
-    });;
+    });
 }, "#edit-profile-image-popup");
 
 (function initialize() {
@@ -196,16 +199,19 @@ function handleOpenedAddCardModal() {
 }
 
 function handleDeletedCardModal(id, handlerConfirm) {
+  popupDeleteCard.open();
   popupDeleteCard.setConfirmHandler(() => {
     popupDeleteCard.renderLoading(true);
-    api.deleteCard(id).then(() => {
-      handlerConfirm();
-    }).then(()=>{
-      popupDeleteCard.renderLoading(false);
-      popupDeleteCard.close();
-    });
+    api
+      .deleteCard(id)
+      .then(() => {
+        handlerConfirm();
+      })
+      .finally(() => {
+        popupDeleteCard.renderLoading(false);
+        popupDeleteCard.close();
+      });
   });
-  popupDeleteCard.open();
 }
 
 function handleOpenedEditImageModal() {

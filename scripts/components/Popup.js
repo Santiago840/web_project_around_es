@@ -18,12 +18,15 @@ export default class Popup {
   close() {
     this._popupElement.classList.remove("popup_is-opened");
   }
-  
+
   renderLoading(isLoading, message = "Guardando...") {
-    this._btnConfirm.disabled = true;
-    isLoading
-      ? (this._btnConfirm.textContent = message)
-      : (this._btnConfirm.textContent = this._btnText);
+    if (isLoading) {
+      this._btnConfirm.disabled = true;
+      this._btnConfirm.textContent = message;
+    } else {
+      this._btnConfirm.disabled = false;
+      this._btnConfirm.textContent = this._btnText;
+    }
   }
 
   setEventListeners() {
