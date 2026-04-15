@@ -3,7 +3,6 @@ import Popup from "./Popup.js";
 export default class PopupWithConfirmation extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
-    this._btnConfirm = this._popupElement.querySelector(".popup__button");
   }
 
   setConfirmHandler(handler) {
@@ -16,7 +15,6 @@ export default class PopupWithConfirmation extends Popup {
       if (this._handler) {
         this._handler();
       }
-      this.close();
     });
   }
 }

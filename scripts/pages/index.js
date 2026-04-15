@@ -151,6 +151,7 @@ const popupCardForm = new PopupWithForm((inputValues) => {
 const popupDeleteCard = new PopupWithConfirmation("#delete-popup");
 
 const popupEditImageProfile = new PopupWithForm((inputValues) => {
+  popupEditImageProfile.renderLoading(true);
   api.updateUserImage({ avatar: inputValues.link }).then((res) => {
     infoUser.setUserInfo({
       name: res.name,
@@ -161,7 +162,6 @@ const popupEditImageProfile = new PopupWithForm((inputValues) => {
       popupEditImageProfile.renderLoading(false);
       popupEditImageProfile.close();
     });;
-  popupEditImageProfile.close();
 }, "#edit-profile-image-popup");
 
 (function initialize() {
@@ -197,8 +197,12 @@ function handleOpenedAddCardModal() {
 
 function handleDeletedCardModal(id, handlerConfirm) {
   popupDeleteCard.setConfirmHandler(() => {
+    popupDeleteCard.renderLoading(true);
     api.deleteCard(id).then(() => {
       handlerConfirm();
+    }).then(()=>{
+      popupDeleteCard.renderLoading(false);
+      popupDeleteCard.close();
     });
   });
   popupDeleteCard.open();
