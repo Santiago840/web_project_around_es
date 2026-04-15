@@ -35,14 +35,22 @@ export default class Api {
   }
 
   addCard(body) {
-    return this._getRequest(this._cardUrl, "POST", body)
+    return this._getRequest(this._cardUrl, "POST", body);
   }
 
-  updateCard(body){
+  updateCard(body) {
     return this._getRequest(this._cardUrl, "PATCH", body);
   }
 
-  deleteCard(id){
+  deleteCard(id) {
     return this._getRequest(`${this._cardUrl}${id}`, "DELETE");
+  }
+
+  updateLike(id) {
+    return this._getRequest(`${this._cardUrl}${id}/likes`, "PUT");
+  }
+
+  deleteLike(id) {
+    return this._getRequest(`${this._cardUrl}${id}/likes`, "DELETE");
   }
 }

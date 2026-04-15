@@ -35,11 +35,29 @@ const cardList = new Section(
         item._id,
         item.name,
         item.link,
+        item.isLiked,
         () => {
           popupImage.open({ name: item.name, link: item.link });
         },
         (handlerConfirm) => {
           handleDeletedCardModal(item._id, handlerConfirm);
+        },
+        () => {
+          if (!item.isLiked) {
+            api
+              .updateLike(item._id)
+              .then((res) => {
+                item.isLiked = res.isLiked;
+              })
+              .catch((err) => console.log(err));
+          } else {
+            api
+              .deleteLike(item._id)
+              .then((res) => {
+                item.isLiked = res.isLiked;
+              })
+              .catch((err) => console.log(err));
+          }
         },
         "#template-card",
       );
@@ -81,10 +99,12 @@ const popupCardForm = new PopupWithForm((inputValues) => {
       const id = res._id;
       const name = res.name;
       const link = res.link;
+      let isLiked = res.isLiked;
       const card = new Card(
         id,
         name,
         link,
+        isLiked,
         () => {
           popupImage.open({
             name,
@@ -93,6 +113,23 @@ const popupCardForm = new PopupWithForm((inputValues) => {
         },
         (handlerConfirm) => {
           handleDeletedCardModal(id, handlerConfirm);
+        },
+        () => {
+          if (!isLiked) {
+            api
+              .updateLike(id)
+              .then((res) => {
+                isLiked = res.isLiked;
+              })
+              .catch((err) => console.log(err));
+          } else {
+            api
+              .deleteLike(id)
+              .then((res) => {
+                isLiked = res.isLiked;
+              })
+              .catch((err) => console.log(err));
+          }
         },
         "#template-card",
       );
